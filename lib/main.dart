@@ -1,3 +1,5 @@
+import 'package:bus_ease/screens/auth/LoginScreen/login.dart';
+import 'package:bus_ease/screens/main/HomeScreen/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -5,15 +7,19 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(),
-      home: const Text('Hello BusEase!')
+      debugShowCheckedModeBanner: false,
+      title: 'BusEase',
+      // Define routes
+      routes: {
+        '/': (context) => const Login(), // Initial route
+        '/home': (context) => const Home(),
+      },
+      initialRoute: '/', // Initial route set to login page
     );
   }
 }
