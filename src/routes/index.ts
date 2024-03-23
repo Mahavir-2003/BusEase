@@ -1,4 +1,4 @@
-import { registerController , loginController , userController } from "../controllers";
+import { registerController , loginController , userController , refreshController } from "../controllers";
 import { Router } from "express";
 import auth from "../middlewares/auth";
 
@@ -8,5 +8,7 @@ const routes = Router();
 routes.post("/register", registerController.register);
 routes.post("/login", loginController.login);
 routes.get("/user", auth , userController.getUser);
+routes.post("/refresh",refreshController.refresh)
+
 
 export default routes;
