@@ -7,15 +7,19 @@ class CustomErrorHandler extends Error {
     }
 
     static alreadyExists(message : string){
-        return new CustomErrorHandler(409, message);
+        return new CustomErrorHandler(409, message = "Already Exists");
     }
 
     static notFound(message : string){
-        return new CustomErrorHandler(404, message);
+        return new CustomErrorHandler(404, message = "Not Found");
     }
 
-    static invalidCredentials(message : string){
+    static invalidCredentials(message : string = "Invalid Credentials"){
         return new CustomErrorHandler(401, message);
+    }
+
+    static unAuthorized(message : string = "Unauthorized"){
+        return new CustomErrorHandler(403, message);
     }
     
 }

@@ -7,6 +7,10 @@ class jwtService{
         return jwt.sign(payload, secret, { expiresIn });
     }
 
+    static verify(token : string, secret : string = JWT_SECRET) : any{
+        return jwt.verify(token, secret);
+    }
+
 
 }
 
