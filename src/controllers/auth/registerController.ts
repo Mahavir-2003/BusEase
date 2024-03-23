@@ -19,7 +19,7 @@ const registerController = {
             phoneNumber: Joi.string().pattern(new RegExp('^[0-9]{10}$')).required(),
             email: Joi.string().email().required(),
             aadharCardNumber: Joi.string().pattern(new RegExp('^[0-9]{12}$')).required(),
-            password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+            password: Joi.string().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,20}$')).required(),
             role: Joi.string().default('user').valid('user', 'gsrtcAdmin', 'collageAdmin', 'student', 'traveller', 'ticketChecker').required()
         });
 
