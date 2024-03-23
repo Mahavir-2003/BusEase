@@ -1,4 +1,6 @@
+import 'package:bus_ease/models/user.dart';
 import 'package:bus_ease/screens/navigation/screen_navigator.dart';
+import 'package:bus_ease/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
@@ -58,6 +60,53 @@ class _SignupState extends State<Signup> {
     _focusNode2.dispose();
     _focusNode3.dispose();
     super.dispose();
+  }
+
+  void registerUser() async {
+    User user = User(
+      firstName: "Mahavir",
+      middleName: "Manubhai",
+      lastName: "Patel",
+      email: "mmp@mail.com",
+      phoneNumber: "1234587890",
+      aadharCardNumber: "123456789032",
+      dob: DateTime(2003, 10, 20),
+      gender: "male",
+      password: "Mahavir@1234",
+      role: "student",
+    );
+
+    AuthService authService = AuthService();
+    var res = await authService.registerUser(user);
+    var success = res['success'];
+    var message = res['message'];
+
+    if(success){
+      if(context.mounted){
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ScreenNavigator(),
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    }
+    else{
+      if(context.mounted){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+        ),
+      );
+      }
+    }
   }
 
   Widget buildTextField(String hintText, TextEditingController controller,
@@ -203,12 +252,7 @@ class _SignupState extends State<Signup> {
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ScreenNavigator(),
-                      ),
-                    );
+                    registerUser();
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,

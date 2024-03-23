@@ -31,6 +31,8 @@ dependencies:
   flutter_svg: ^0.22.0  # Use the latest version available
   percent_indicator: ^3.0.1
   pretty_qr_code: ^3.1.0
+  flutter_secure_storage: ^9.0.0
+  http: ^1.2.0
   flutter:
     sdk: flutter
 

@@ -1,4 +1,4 @@
-import 'package:bus_ease/models/Interfaces/date.dart';
+import 'package:bus_ease/models/date.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 
