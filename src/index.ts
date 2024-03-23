@@ -1,1 +1,1 @@
-console.log("Hello Server!")
+console.log("Hello BusEase!")
