@@ -3,9 +3,9 @@ import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import compression from "compression";
-import { MONGO_URL, PORT } from "./config";
-import routes from "./routes";
-import errorHandler from "./middlewares/errorHandler";
+import { MONGO_URL, PORT } from "./src/config";
+import routes from "./src/routes";
+import errorHandler from "./src/middlewares/errorHandler";
 
 // Create Express server
 const app = express();

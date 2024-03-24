@@ -4,7 +4,9 @@
   "description": "Server for BusEase",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon"
+    "start": "nodemon",
+    "build": "nodemon",
+    "dev": "nodemon"
   },
   "author": "Mahavir Patel",
   "license": "ISC",
