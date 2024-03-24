@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class AuthService {
   final _storage = const FlutterSecureStorage();
-  var baseUrl = "http://192.168.196.182:8080";
+  var baseUrl = "https://busease-server.vercel.app";
 
   Future<bool> isLoggedIn() async {
     var token = await _storage.read(key: "access_token");
