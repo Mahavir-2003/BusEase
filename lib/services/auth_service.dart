@@ -7,8 +7,16 @@ import 'package:http/http.dart' as http;
 class AuthService {
   final _storage = const FlutterSecureStorage();
 
+  Future<bool> isLoggedIn() async{
+    var token = await _storage.read(key: "access_token");
+    if(token != null && token.isNotEmpty){
+      return true;
+    }
+    return false;
+  }
+
   Future<Map<String, dynamic>> registerUser(User user) async {
-    var url = Uri.parse('http://localhost:8080/api/register');
+    var url = Uri.parse('http://192.168.196.182:8080/api/register');
 
     var body = jsonEncode({
       'firstName': user.firstName,
