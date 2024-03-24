@@ -1,5 +1,6 @@
 import 'package:bus_ease/screens/auth/SignupScreen/signup.dart';
 import 'package:bus_ease/screens/navigation/screen_navigator.dart';
+import 'package:bus_ease/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -32,6 +33,41 @@ class _Login extends State<Login> {
     _textEditingController.dispose();
     _focusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _loginUser() async {
+    AuthService authService = AuthService();
+    var res = await authService.loginUser(email: "johnsmith@example.com" , password: "1234");
+    var success = res['success'];
+    var message = res['message'];
+
+  if(success){
+      if(context.mounted){
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ScreenNavigator(),
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    }
+    else{
+      if(context.mounted){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+        ),
+      );
+      }
+    }
+    
   }
 
   @override
@@ -137,12 +173,7 @@ class _Login extends State<Login> {
                               20), // Add some spacing between the TextField and the Button
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ScreenNavigator(),
-                            ),
-                          );
+                          _loginUser();
                         },
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,

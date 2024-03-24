@@ -101,6 +101,9 @@ class AuthService {
           "Content-Type": "application/json",
           "Authorization": "Bearer ${await _storage.read(key: "access_token")}"
         },
+        body: jsonEncode({
+          'refresh_token': await _storage.read(key: "refresh_token"),
+        }),
       );
       if (response.statusCode == 200) {
         await _storage.delete(key: "access_token");

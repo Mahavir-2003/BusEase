@@ -62,7 +62,7 @@ class _SignupState extends State<Signup> {
     super.dispose();
   }
 
-  void registerUser() async {
+  void _registerUser() async {
     User user = User(
       firstName: "Mahavir",
       middleName: "Manubhai",
@@ -252,7 +252,7 @@ class _SignupState extends State<Signup> {
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: ElevatedButton(
                   onPressed: () {
-                    registerUser();
+                    _registerUser();
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
