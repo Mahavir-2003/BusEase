@@ -10,7 +10,7 @@ const logoutController ={
         });
 
         const { error } = refreshSchema.validate(req.body);
-
+        
         if (error) {
             return next(error);
         }
@@ -19,6 +19,7 @@ const logoutController ={
             await RefreshToken.deleteOne({token : req.body.refresh_token});
             return res.status(200).json({message : "User logged out successfully!"});
         }catch(err){
+            console.log(err);
             return next(new Error("An error occurred while logging out!"));
         }
     }

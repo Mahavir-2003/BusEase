@@ -18,6 +18,10 @@ app.use(cookieParser());
 app.use(compression());
 app.use("/api", routes);
 
+app.get("/", (req, res) => {
+  res.send("Hello and welcome to the BusEase server");
+});
+
 // connecting to the database
 try {
   mongoose.connect(MONGO_URL);

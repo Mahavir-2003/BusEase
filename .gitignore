@@ -33,3 +33,4 @@ yarn.lock
 .env.local
 
 # Ignore any other files or directories specific to your project
+.vercel
