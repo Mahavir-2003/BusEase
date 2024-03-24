@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "build": "nodemon",
-    "dev": "nodemon"
+    "build": "tsc",
+    "dev": "nodemon",
+    "vercel-build":"echo hello"
   },
   "author": "Mahavir Patel",
   "license": "ISC",
