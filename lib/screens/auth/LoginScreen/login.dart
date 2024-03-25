@@ -24,68 +24,61 @@ class _Login extends State<Login> {
     super.initState();
   }
 
-  Future<void> _loginUser() async {
-    // set isSubmitting to true
+  // Initialize RegExp outside of the function
+final RegExp emailRegExp = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}");
+final RegExp phoneRegExp = RegExp(r"^\d{10}$");
+final RegExp aadharRegExp = RegExp(r"^\d{12}$");
+final RegExp passwordRegExp = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$");
+
+void showSnackBar(BuildContext context, String message, Color color) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: color,
+    ),
+  );
+}
+
+Future<void> _loginUser() async {
+  try {
     setState(() {
       isSubmitting = true;
     });
+
     AuthService authService = AuthService();
 
-    // extract the values from the controllers
     String id = idController.text;
     String password = passwordController.text;
     String email = '';
     String phone = '';
     String aadharNumber = '';
     String pass = '';
-    // check if id is a string
-    RegExp emailRegExp =
-        RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}");
-    RegExp phoneRegExp = RegExp(r"^\d{10}$");
-    RegExp aadharRegExp = RegExp(r"^\d{12}$");
-    RegExp passwordRegExp = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$");
 
-    try {
-      if (emailRegExp.hasMatch(id)) {
-        email = id;
-      } else if (phoneRegExp.hasMatch(id)) {
-        phone = id;
-      } else if (aadharRegExp.hasMatch(id)) {
-        aadharNumber = id;
-      }
-       else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Invalid Email/ Phone/ Aadhar Number"),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-      if(!passwordRegExp.hasMatch(password)){
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Invalid Password"),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }else{
-        pass = password;
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Invalid Email/ Phone/ Aadhar Number"),
-          backgroundColor: Colors.red,
-        ),
-      );
+    if (emailRegExp.hasMatch(id)) {
+      email = id;
+    } else if (phoneRegExp.hasMatch(id)) {
+      phone = id;
+    } else if (aadharRegExp.hasMatch(id)) {
+      aadharNumber = id;
+    } else {
+      showSnackBar(context, "Invalid Email/ Phone/ Aadhar Number", Colors.red);
+      return;
+    }
+
+    if (!passwordRegExp.hasMatch(password)) {
+      showSnackBar(context, "Invalid Password", Colors.red);
+      return;
+    } else {
+      pass = password;
     }
 
     var res = await authService.loginUser(
-        email: email,
-        phoneNumber: phone,
-        aadharCardNumber: aadharNumber,
-        password: pass
-        );
+      email: email,
+      phoneNumber: phone,
+      aadharCardNumber: aadharNumber,
+      password: pass,
+    );
+
     var success = res['success'];
     var message = res['message'];
 
@@ -97,28 +90,23 @@ class _Login extends State<Login> {
             builder: (context) => const ScreenNavigator(),
           ),
         );
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message),
-            backgroundColor: Colors.green,
-          ),
-        );
+        showSnackBar(context, message, Colors.green);
       }
     } else {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message),
-            backgroundColor: Colors.red,
-          ),
-        );
+        showSnackBar(context, message, Colors.red);
       }
     }
-    // set isSubmitting to false
+  } catch (e) {
+    if (context.mounted){
+    showSnackBar(context, "An error occurred: $e", Colors.red);
+    }
+  } finally {
     setState(() {
       isSubmitting = false;
     });
   }
+}
 
   @override
   Widget build(BuildContext context) {
