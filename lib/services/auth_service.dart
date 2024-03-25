@@ -64,9 +64,9 @@ class AuthService {
     var url = Uri.parse("$baseUrl/api/login");
 
     var body = jsonEncode({
-      if (email != null) 'email': email,
-      if (phoneNumber != null) 'phoneNumber': phoneNumber,
-      if (aadharCardNumber != null) 'aadharCardNumber': aadharCardNumber,
+      if (email != '') 'email': email,
+      if (phoneNumber != '') 'phoneNumber': phoneNumber,
+      if (aadharCardNumber != '') 'aadharCardNumber': aadharCardNumber,
       'password': password,
     });
 

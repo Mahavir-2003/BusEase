@@ -13,36 +13,84 @@ class Login extends StatefulWidget {
 }
 
 class _Login extends State<Login> {
-  final TextEditingController _textEditingController = TextEditingController();
-  bool _isHovered = false;
-  late FocusNode _focusNode;
+  // create a state isSubmitting to check if the form is submitting
+  bool isSubmitting = false;
+
+  final TextEditingController idController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _focusNode = FocusNode();
-    _focusNode.addListener(() {
-      setState(() {
-        _isHovered = _focusNode.hasFocus;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _textEditingController.dispose();
-    _focusNode.dispose();
-    super.dispose();
   }
 
   Future<void> _loginUser() async {
+    // set isSubmitting to true
+    setState(() {
+      isSubmitting = true;
+    });
     AuthService authService = AuthService();
-    var res = await authService.loginUser(email: "johnsmith@example.com" , password: "1234");
+
+    // extract the values from the controllers
+    String id = idController.text;
+    String password = passwordController.text;
+    String email = '';
+    String phone = '';
+    String aadharNumber = '';
+    String pass = '';
+    // check if id is a string
+    RegExp emailRegExp =
+        RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}");
+    RegExp phoneRegExp = RegExp(r"^\d{10}$");
+    RegExp aadharRegExp = RegExp(r"^\d{12}$");
+    RegExp passwordRegExp = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$");
+
+    try {
+      if (emailRegExp.hasMatch(id)) {
+        email = id;
+      } else if (phoneRegExp.hasMatch(id)) {
+        phone = id;
+      } else if (aadharRegExp.hasMatch(id)) {
+        aadharNumber = id;
+      }
+       else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Invalid Email/ Phone/ Aadhar Number"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      if(!passwordRegExp.hasMatch(password)){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Invalid Password"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }else{
+        pass = password;
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Invalid Email/ Phone/ Aadhar Number"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+
+    var res = await authService.loginUser(
+        email: email,
+        phoneNumber: phone,
+        aadharCardNumber: aadharNumber,
+        password: pass
+        );
     var success = res['success'];
     var message = res['message'];
 
-  if(success){
-      if(context.mounted){
+    if (success) {
+      if (context.mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -56,253 +104,193 @@ class _Login extends State<Login> {
           ),
         );
       }
-    }
-    else{
-      if(context.mounted){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.red,
-        ),
-      );
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
-    
+    // set isSubmitting to false
+    setState(() {
+      isSubmitting = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    const TextStyle textStyle = TextStyle(
-      color: Colors.grey,
-      // Center horizontally
-      // Center vertically
-    );
-
     return Scaffold(
       backgroundColor: const Color(0xff383E48),
-      body: Center(
-        child: SingleChildScrollView(
-          // Added SingleChildScrollView to handle overflow vertically
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding:  EdgeInsets.only(left: 25), // Add left padding
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Log In',
-                      style:  TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 50,
+            ),
+            const Text(
+              "Log In",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 26,
+                  fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            // Email/Phone/Aadhar Number  Field
+            TextField(
+              controller: idController,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+              ),
+              cursorColor: Colors.white,
+              decoration: const InputDecoration(
+                fillColor: Color(0xff545560),
+                filled: true,
+                hintText: "Email/ Phone/ AadharNumber",
+                hintStyle: TextStyle(
+                  color: Color(0x88ffffff),
+                  fontSize: 14,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(0, 255, 255, 255)),
                 ),
               ),
-              const SizedBox(height: 40),
-             const  Padding(
-                padding:EdgeInsets.only(left: 25), // Add left padding
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Email/ Phone Number',
-                      style :TextStyle(
-                        color: Color.fromARGB(82, 214, 215, 215),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              controller: passwordController,
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+              cursorColor: Colors.white,
+              obscureText: true, // Add this line
+              decoration: const InputDecoration(
+                fillColor: Color(0xff545560),
+                filled: true,
+                hintText: "Password",
+                hintStyle: TextStyle(color: Color(0x88ffffff), fontSize: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(0, 255, 255, 255)),
                 ),
               ),
-
-              const SizedBox(height: 2),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SizedBox(
-                  width: 360,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      MouseRegion(
-                        onEnter: (event) => setState(() => _isHovered = true),
-                        onExit: (event) => setState(() => _isHovered = false),
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(84, 85, 96, 96),
-                            border: Border.all(
-                              color: _isHovered
-                                  ? Colors.white
-                                  : Colors.transparent,
-                              width: _isHovered ? 1.0 : 0.0,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: TextField(
-                            controller: _textEditingController,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
-                            ),
-                            decoration: const InputDecoration(
-                              hintText: 'Email/ Phone Number',
-                              hintStyle: textStyle,
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 14,
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            // Login Button
+            GestureDetector(
+              onTap: _loginUser,
+              child: SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xffFFC857),
+                    borderRadius:
+                        BorderRadius.circular(3.0), // Adjust as needed
+                  ),
+                  child: Center(
+                    child: isSubmitting // Replace with your actual condition
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Color(
+                                0xff111111,
                               ),
-                              alignLabelWithHint: true,
-                              isDense: true,
-                              prefixIconConstraints: BoxConstraints(
-                                minHeight: 48,
-                              ),
+                              strokeWidth: 2.0,
                             ),
-                            focusNode: _focusNode,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                          height:
-                              20), // Add some spacing between the TextField and the Button
-                      ElevatedButton(
-                        onPressed: () {
-                          _loginUser();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: const Color(0xffFBC420),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        child: Container(
-                          height: 50,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'Next',
+                          )
+                        : const Text(
+                            "Log In",
                             style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
+                              color: Color(0xff111111),
+                              fontSize: 16,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ),
-
-              const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Color(0xff565b63),
-                        thickness: 1,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        'or',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 188, 189, 190),
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: Color(0xff565b63),
-                        thickness: 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Action when the Google button is pressed
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff545560),
-                    minimumSize: const Size(360, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/google_logo.png',
-                        height: 24,
-                      ),
-                      const Expanded(
-                        child: Text(
-                          'Continue with Google',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: "Inter",
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            // Or Text with Divider
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 1,
+                    color: const Color(0x33ffffff),
                   ),
                 ),
-              ),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height *
-                      0.08), // Add some space below Google button
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Don't have an account? ",
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    "or",
+                    style: TextStyle(
+                      color: Color(0xaaffffff),
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    height: 1,
+                    color: const Color(0x33ffffff),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            // Sign Up Button
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Signup(),
+                  ),
+                );
+              },
+              child: SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xff545560),
+                    borderRadius:
+                        BorderRadius.circular(3.0), // Adjust as needed
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Sign Up",
                       style: TextStyle(
-                        color: Color.fromARGB(255, 159, 158, 158),
+                        color: Color(0xaaffffff),
                         fontSize: 16,
+                        letterSpacing: 1.5,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Signup()),
-                        );
-                      },
-                      child: const Text(
-                        "Sign Up Now",
-                        style: TextStyle(
-                          color: Color(0xffececed),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
