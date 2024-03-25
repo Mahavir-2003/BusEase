@@ -13,56 +13,13 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  final TextEditingController _textEditingController1 = TextEditingController();
-  final TextEditingController _textEditingController2 = TextEditingController();
-  final TextEditingController _textEditingController3 = TextEditingController();
-
-  late FocusNode _focusNode1;
-  late FocusNode _focusNode2;
-  late FocusNode _focusNode3;
-
-  bool _isHovered1 = false;
-  bool _isHovered2 = false;
-  bool _isHovered3 = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode1 = FocusNode();
-    _focusNode2 = FocusNode();
-    _focusNode3 = FocusNode();
-
-    _focusNode1.addListener(() {
-      setState(() {
-        _isHovered1 = _focusNode1.hasFocus;
-      });
-    });
-
-    _focusNode2.addListener(() {
-      setState(() {
-        _isHovered2 = _focusNode2.hasFocus;
-      });
-    });
-
-    _focusNode3.addListener(() {
-      setState(() {
-        _isHovered3 = _focusNode3.hasFocus;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _textEditingController1.dispose();
-    _textEditingController2.dispose();
-    _textEditingController3.dispose();
-    _focusNode1.dispose();
-    _focusNode2.dispose();
-    _focusNode3.dispose();
-    super.dispose();
-  }
+  bool isSubmitting = false;
+  String dropdownValue = 'male';
 
   void _registerUser() async {
+    setState(() {
+      isSubmitting = true;
+    });
     User user = User(
       firstName: "Mahavir",
       middleName: "Manubhai",
@@ -81,8 +38,8 @@ class _SignupState extends State<Signup> {
     var success = res['success'];
     var message = res['message'];
 
-    if(success){
-      if(context.mounted){
+    if (success) {
+      if (context.mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -96,191 +53,299 @@ class _SignupState extends State<Signup> {
           ),
         );
       }
-    }
-    else{
-      if(context.mounted){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.red,
-        ),
-      );
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
-  }
-
-  Widget buildTextField(String hintText, TextEditingController controller,
-      FocusNode focusNode, bool isHovered) {
-    TextStyle textStyle = const TextStyle(
-      color: Colors.grey,
-    );
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: SizedBox(
-        width: 360,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            MouseRegion(
-              onEnter: (_) => setState(() => isHovered = true),
-              onExit: (_) => setState(() => isHovered = false),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(84, 85, 96, 96),
-                  border: Border.all(
-                    color: isHovered ? Colors.white : Colors.transparent,
-                    width: isHovered ? 1.0 : 0.0,
-                  ),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: TextField(
-                  controller: controller,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: hintText,
-                    hintStyle: textStyle,
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 14),
-                    alignLabelWithHint: true,
-                    isDense: true,
-                    prefixIconConstraints: const BoxConstraints(minHeight: 48),
-                  ),
-                  focusNode: focusNode,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    setState(() {
+      isSubmitting = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xff383E48),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Signup',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 40,
+            ),
+            const Text(
+              "Sign Up",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 26,
+                  fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            // Email/Phone/Aadhar Number  Field
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      fillColor: Color(0xff545560),
+                      filled: true,
+                      hintText: "First Name",
+                      hintStyle: TextStyle(
+                        color: Color(0x88ffffff),
+                        fontSize: 14,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Enter Full Name',
-                      style: TextStyle(
-                        color: Color.fromARGB(82, 214, 215, 215),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 2),
-              buildTextField('Enter Full Name', _textEditingController1,
-                  _focusNode1, _isHovered1),
-              const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Aadharcard Number',
-                      style: TextStyle(
-                        color: Color.fromARGB(82, 214, 215, 215),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 2),
-              buildTextField('Aadharcard Number', _textEditingController2,
-                  _focusNode2, _isHovered2),
-              const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'DOB',
-                      style: TextStyle(
-                        color: Color.fromARGB(82, 214, 215, 215),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 2),
-              buildTextField(
-                  'DOB', _textEditingController3, _focusNode3, _isHovered3),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _registerUser();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    backgroundColor: const Color(0xffFBC420),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
+                    cursorColor: Colors.white,
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 14), // Equal vertical padding
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Next',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                          ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      fillColor: Color(0xff545560),
+                      filled: true,
+                      hintText: "Middle Name",
+                      hintStyle: TextStyle(
+                        color: Color(0x88ffffff),
+                        fontSize: 14,
+                      ),
+                    ),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                    cursorColor: Colors.white,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      fillColor: Color(0xff545560),
+                      filled: true,
+                      hintText: "Last Name",
+                      hintStyle: TextStyle(
+                        color: Color(0x88ffffff),
+                        fontSize: 14,
+                      ),
+                    ),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                    cursorColor: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+
+            TextField(
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+              cursorColor: Colors.white,
+              decoration: const InputDecoration(
+                fillColor: Color(0xff545560),
+                filled: true,
+                hintText: "email",
+                hintStyle: TextStyle(color: Color(0x88ffffff), fontSize: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(0, 255, 255, 255)),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            TextField(
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+              cursorColor: Colors.white,
+              decoration: const InputDecoration(
+                fillColor: Color(0xff545560),
+                filled: true,
+                hintText: "PhoneNumber",
+                hintStyle: TextStyle(color: Color(0x88ffffff), fontSize: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(0, 255, 255, 255)),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            TextField(
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+              cursorColor: Colors.white,
+              decoration: const InputDecoration(
+                fillColor: Color(0xff545560),
+                filled: true,
+                hintText: "Aadhar Card Number",
+                hintStyle: TextStyle(color: Color(0x88ffffff), fontSize: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(0, 255, 255, 255)),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: SizedBox(
+                    height: 45,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff545560),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3.0),
                         ),
-                      ],
+                      ),
+                      child: const Text('Birthday',
+                          style: TextStyle(
+                              color: Color(0x88ffffff),
+                              fontSize: 14,
+                              letterSpacing: 1.2)),
+                      onPressed: () async {
+                        final DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime.now(),
+                        );
+
+                        if (pickedDate != null) {
+                          print(pickedDate.toString());
+                        }
+                      },
                     ),
                   ),
                 ),
+                const SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    height: 45,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xff545560),
+                        borderRadius: BorderRadius.circular(3.0),
+                      ),
+                      child: Center(
+                        child: DropdownButton<String>(
+                          value: dropdownValue,
+                          icon: const Icon(Icons.arrow_drop_down),
+                          iconSize: 24,
+                          iconEnabledColor: const Color(0x88ffffff),
+                          dropdownColor: const Color(0xff545560),
+                          elevation: 0,
+                          underline: Container(
+                            height: 0,
+                            color: const Color(0xff545560),
+                          ),
+                          style: const TextStyle(color: Color(0x88ffffff), fontSize: 14 , letterSpacing: 1.2, fontWeight: FontWeight.w500),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownValue = newValue!;
+                            });
+                          },
+                          items: <String>['male', 'female', 'Other']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            TextField(
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+              cursorColor: Colors.white,
+              decoration: const InputDecoration(
+                fillColor: Color(0xff545560),
+                filled: true,
+                hintText: "Password",
+                hintStyle: TextStyle(color: Color(0x88ffffff), fontSize: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(0, 255, 255, 255)),
+                ),
               ),
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            // Login Button
+            GestureDetector(
+              onTap: _registerUser,
+              child: SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xffFFC857),
+                    borderRadius:
+                        BorderRadius.circular(3.0), // Adjust as needed
+                  ),
+                  child: Center(
+                    child: isSubmitting // Replace with your actual condition
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Color(
+                                0xff111111,
+                              ),
+                              strokeWidth: 2.0,
+                            ),
+                          )
+                        : const Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              color: Color(0xff111111),
+                              fontSize: 16,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
