@@ -1,3 +1,4 @@
+import 'package:bus_ease/providers/user_provider.dart';
 import 'package:bus_ease/screens/additional/profile_Settings/account.dart';
 import 'package:bus_ease/screens/additional/profile_Settings/help_center.dart';
 import 'package:bus_ease/screens/additional/profile_Settings/paas_validity.dart';
@@ -5,6 +6,7 @@ import 'package:bus_ease/screens/auth/LoginScreen/login.dart';
 import 'package:bus_ease/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -16,9 +18,10 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<void> _logout() async {
-    AuthService authService = AuthService();
+    AuthService authService = AuthService(userProvider: Provider.of<UserProvider>(_scaffoldKey.currentContext!, listen: false));
     var res = await authService.logoutUser();
     var success = res['success'];
     var message = res['message'];
@@ -56,6 +59,7 @@ class _ProfileState extends State<Profile> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: const Color(0xff383E48),
         body: Center(
           child: Column(
@@ -73,9 +77,9 @@ class _ProfileState extends State<Profile> {
                 ],
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Dhruv Patel',
-                style: TextStyle(color: Colors.white, fontSize: 22),
+              Text(
+                "${Provider.of<UserProvider>(context).user!.firstName} ${Provider.of<UserProvider>(context).user!.lastName}",
+                style: const TextStyle(color: Colors.white, fontSize: 22),
               ),
               const SizedBox(height: 65),
               // Correct placement of _buildInfoBox

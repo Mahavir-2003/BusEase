@@ -1,7 +1,9 @@
+import 'package:bus_ease/providers/user_provider.dart';
 import 'package:bus_ease/screens/auth/SignupScreen/signup.dart';
 import 'package:bus_ease/screens/navigation/screen_navigator.dart';
 import 'package:bus_ease/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -15,6 +17,7 @@ class Login extends StatefulWidget {
 class _Login extends State<Login> {
   // create a state isSubmitting to check if the form is submitting
   bool isSubmitting = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final TextEditingController idController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -45,7 +48,7 @@ Future<void> _loginUser() async {
       isSubmitting = true;
     });
 
-    AuthService authService = AuthService();
+    AuthService authService = AuthService(userProvider: Provider.of<UserProvider>(_scaffoldKey.currentContext!, listen: false));
 
     String id = idController.text;
     String password = passwordController.text;
@@ -111,6 +114,7 @@ Future<void> _loginUser() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: const Color(0xff383E48),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

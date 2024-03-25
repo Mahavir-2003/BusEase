@@ -1,11 +1,17 @@
 import 'dart:async';
+import 'package:bus_ease/providers/user_provider.dart';
 import 'package:bus_ease/screens/auth/LoginScreen/login.dart';
 import 'package:bus_ease/screens/navigation/screen_navigator.dart';
-import 'package:bus_ease/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => UserProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -37,18 +43,24 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 1), () async {
-      bool isLoggedIn = await AuthService().isLoggedIn();
-      if (isLoggedIn) {
-        if(context.mounted){
+    fetchUser();
+  }
+
+  Future<void> fetchUser() async {
+    await Provider.of<UserProvider>(context, listen: false).fetchUser();
+    bool isLoggedIn = false;
+    if(context.mounted){
+      isLoggedIn = Provider.of<UserProvider>(context, listen: false).user != null;
+    }
+    if (isLoggedIn) {
+      if(context.mounted){
         Navigator.pushReplacementNamed(context, '/home');
-        }
-      } else {
-        if(context.mounted){
-        Navigator.pushReplacementNamed(context, '/login');
-        }
       }
-    });
+    } else {
+      if(context.mounted){
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    }
   }
 
   @override

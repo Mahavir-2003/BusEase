@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:bus_ease/models/user.dart';
+import 'package:bus_ease/providers/user_provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
+  final UserProvider userProvider;
   final _storage = const FlutterSecureStorage();
   var baseUrl = "https://busease-server.vercel.app";
+
+  AuthService({required this.userProvider});
 
   Future<bool> isLoggedIn() async {
     var token = await _storage.read(key: "access_token");
@@ -43,7 +47,7 @@ class AuthService {
       if (response.statusCode == 200) {
         await _storage.write(key: "access_token", value: res['access_token']);
         await _storage.write(key: "refresh_token", value: res['refresh_token']);
-
+        await userProvider.fetchUser();
         return {'success': true, 'message': 'Registration successful'};
       } else {
         if (response.statusCode == 500) {
@@ -81,7 +85,7 @@ class AuthService {
       if (response.statusCode == 200) {
         await _storage.write(key: "access_token", value: res['access_token']);
         await _storage.write(key: "refresh_token", value: res['refresh_token']);
-
+        await userProvider.fetchUser();
         return {'success': true, 'message': 'Login successful'};
       } else {
         return {'success': false, 'message': "Login failed!"};
@@ -134,6 +138,7 @@ class AuthService {
       if (response.statusCode == 200) {
         await _storage.write(key: "access_token", value: res['access_token']);
         await _storage.write(key: "refresh_token", value: res['refresh_token']);
+        await userProvider.fetchUser();
         return true;
       } else {
         return false;

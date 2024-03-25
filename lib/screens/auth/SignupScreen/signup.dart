@@ -1,7 +1,9 @@
 import 'package:bus_ease/models/user.dart';
+import 'package:bus_ease/providers/user_provider.dart';
 import 'package:bus_ease/screens/navigation/screen_navigator.dart';
 import 'package:bus_ease/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -13,6 +15,7 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isSubmitting = false;
   String dropdownValue = 'male';
 
@@ -123,7 +126,7 @@ class _SignupState extends State<Signup> {
       role: "user",
     );
 
-    AuthService authService = AuthService();
+    AuthService authService = AuthService(userProvider: Provider.of<UserProvider>(_scaffoldKey.currentContext!, listen: false));
     var res = await authService.registerUser(user);
     var success = res['success'];
     var message = res['message'];
@@ -161,6 +164,7 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: const Color(0xff383E48),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
