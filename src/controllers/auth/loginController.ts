@@ -14,7 +14,7 @@ const loginController = {
             email: Joi.string().email(),
             phoneNumber: Joi.string().pattern(new RegExp('^[0-9]{10}$')),
             aadharCardNumber: Joi.string().pattern(new RegExp('^[0-9]{12}$')),
-            password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+            password: Joi.string().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,20}$')).required(),
         }).or('email', 'phoneNumber', 'aadharCardNumber');
 
         const { error } = loginSchema.validate(req.body);
