@@ -410,6 +410,7 @@ class _SignupState extends State<Signup> {
                 controller: passwordController,
                 style: const TextStyle(color: Colors.white, fontSize: 14),
                 cursorColor: Colors.white,
+                obscureText: true,
                 decoration: const InputDecoration(
                   fillColor: Color(0xff545560),
                   filled: true,
@@ -428,6 +429,7 @@ class _SignupState extends State<Signup> {
                 controller: confirmPasswordController,
                 style: const TextStyle(color: Colors.white, fontSize: 14),
                 cursorColor: Colors.white,
+                obscureText: true,
                 decoration: const InputDecoration(
                   fillColor: Color(0xff545560),
                   filled: true,
