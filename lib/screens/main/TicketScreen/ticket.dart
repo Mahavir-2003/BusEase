@@ -1,6 +1,8 @@
+import 'package:bus_ease/providers/user_provider.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:provider/provider.dart';
 class Ticket extends StatelessWidget {
   const Ticket({Key? key}) : super(key: key);
   @override
@@ -131,15 +133,15 @@ class Ticket extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'ID:',
                               style: TextStyle(
                                 color: Color(0xffA7A7A7),
@@ -148,14 +150,14 @@ class Ticket extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '428-163-XXX',
-                              style: TextStyle(
+                              Provider.of<UserProvider>(context, listen: false).user!.id,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            SizedBox(height: 10),
-                            Text(
+                            const SizedBox(height: 10),
+                            const Text(
                               'Passenger:',
                               style: TextStyle(
                                 color: Color(0xffA7A7A7),
@@ -164,14 +166,14 @@ class Ticket extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Mahavir M. Patel',
-                              style: TextStyle(
+                              '${Provider.of<UserProvider>(context, listen: false).user!.firstName} ${Provider.of<UserProvider>(context, listen: false).user!.middleName.substring(0,1)}.  ${Provider.of<UserProvider>(context, listen: false).user!.lastName}',
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            SizedBox(height: 10),
-                            Text(
+                            const SizedBox(height: 10),
+                            const Text(
                               'Date:',
                               style: TextStyle(
                                 color: Color(0xffA7A7A7),
@@ -179,15 +181,15 @@ class Ticket extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            Text(
+                            const Text(
                               '28 July 2024',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            SizedBox(height: 10),
-                            Text(
+                            const SizedBox(height: 10),
+                            const Text(
                               'Depot:',
                               style: TextStyle(
                                 color: Color(0xffA7A7A7),
@@ -195,7 +197,7 @@ class Ticket extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            Text(
+                            const Text(
                               'Palanpur',
                               style: TextStyle(
                                 fontSize: 16,
@@ -204,7 +206,7 @@ class Ticket extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Column(
+                        const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [

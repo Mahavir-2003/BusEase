@@ -332,7 +332,7 @@ class _SignupState extends State<Signup> {
                           builder: (BuildContext context,
                               TextEditingValue value, Widget? child) {
                                 String formatedDate = "Birthday";
-                                if(!birthdayController.text.isEmpty){
+                                if(birthdayController.text.isNotEmpty){
                                   DateTime dateTime = DateTime.parse(value.text);
                                   formatedDate = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
                                 }

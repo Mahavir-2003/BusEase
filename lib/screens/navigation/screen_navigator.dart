@@ -37,7 +37,7 @@ class _ScreenNavigatorState extends State<ScreenNavigator> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xff383E48),
-      appBar: AppBarBusEase(parentContext: context),
+      appBar: AppBarBusEase(parentContext: context , onItemTapped: _onItemTapped),
       body: PageView(
         controller: _pageController,
         children: _screens,

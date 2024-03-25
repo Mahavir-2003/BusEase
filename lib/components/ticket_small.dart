@@ -1,6 +1,8 @@
 //create a stateful widget
+import 'package:bus_ease/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:provider/provider.dart';
 
 class TicketSmall extends StatefulWidget {
   const TicketSmall({Key? key}) : super(key: key);
@@ -88,8 +90,8 @@ class _TicketSmallState extends State<TicketSmall> {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 5, left: 20, bottom: 10, right: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 5, left: 20, bottom: 10, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -97,7 +99,7 @@ class _TicketSmallState extends State<TicketSmall> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Passenger:',
                         style: TextStyle(
                           color: Color(0xffA7A7A7),
@@ -106,15 +108,15 @@ class _TicketSmallState extends State<TicketSmall> {
                         ),
                       ),
                       Text(
-                        'Mahavir M. Patel',
-                        style: TextStyle(
+                        '${Provider.of<UserProvider>(context, listen: false).user!.firstName} ${Provider.of<UserProvider>(context, listen: false).user!.middleName.substring(0,1)}.  ${Provider.of<UserProvider>(context, listen: false).user!.lastName}',
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
                   ),
-                  Column(
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -156,7 +158,7 @@ class _TicketSmallState extends State<TicketSmall> {
                         ),
                       ),
                       Text(
-                        'SIDDHPUR',
+                        'XXXXXXX',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -183,7 +185,7 @@ class _TicketSmallState extends State<TicketSmall> {
                           ),
                         ),
                         Text(
-                          'Student',
+                          'XXXXX',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,

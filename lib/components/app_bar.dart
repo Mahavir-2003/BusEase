@@ -1,11 +1,10 @@
-import 'package:bus_ease/screens/main/ProfileScreen/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AppBarBusEase extends AppBar {
   final BuildContext parentContext; // Add this variable
-
-  AppBarBusEase({super.key, required this.parentContext}) // Add this argument
+  final Function(int) onItemTapped;
+  AppBarBusEase({super.key, required this.onItemTapped, required this.parentContext}) // Rename the 'key' parameter to 'appBarKey'
       : super(
           backgroundColor: const Color(0x00000000),
           automaticallyImplyLeading: false, // Remove the back arrow
@@ -16,13 +15,7 @@ class AppBarBusEase extends AppBar {
             children: [
               GestureDetector(
                 onTap: () {
-                  // Navigate to another screen when CircleAvatar is clicked
-                  Navigator.push(
-                    parentContext, // Use parentContext instead of context
-                    MaterialPageRoute(
-                      builder: (context) => const Profile(),
-                    ),
-                  );
+                  onItemTapped(3);
                 },
                 child: const CircleAvatar(
                   radius: 16,

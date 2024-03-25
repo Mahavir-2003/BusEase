@@ -12,26 +12,24 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> fetchUser() async {
     var url = Uri.parse("$baseUrl/api/user");
-    var access_token = await _storage.read(key: "access_token");
+    var accessToken = await _storage.read(key: "access_token");
 
-    if (access_token == null) {
-      print('Access token is null');
+    if (accessToken == null) {
       return;
     }
 
     try {
       var response = await http.get(url, headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer $access_token"
+        "Authorization": "Bearer $accessToken"
       });
       if (response.statusCode == 200) {
         var res = jsonDecode(response.body);
-        print(res);
         _user = UserData.fromJson(res);
         notifyListeners();
       }
     } catch (e) {
-      print(e);
-    }
+    throw Exception('Failed to load user data');
+}
   }
 }
