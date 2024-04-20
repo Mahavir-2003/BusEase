@@ -25,7 +25,6 @@ const ticketController = {
             from : Joi.string().required(),
             to : Joi.string().required(),
             ticketQuantity : Joi.number().required(),
-            ticketPrice : Joi.number().required(),
         });
 
         const { error, value } = ticketSchema.validate(req.body);

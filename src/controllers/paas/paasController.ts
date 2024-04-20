@@ -3,6 +3,14 @@ import Joi from "joi";
 import { Paas } from "../../models";
 import CustomErrorHandler from "../../services/CustomErrorHandler";
 
+interface RouteData {
+    [key: string]: {
+        routes: Array<String>
+    }
+}
+
+import routeData from "../../static/data/routeData/routes";
+
 interface UserRequest extends Request{
     user? : { _id : string , role : string }
 }
@@ -21,7 +29,6 @@ const paasController = {
             to: Joi.string().required(),
             expiryDate: Joi.date().min('now').required(),
             paasType: Joi.string().valid('NORMAL', 'EXPRESS').required(),
-            possibleDestinations : Joi.array().items(Joi.string()).required(),
             depot: Joi.string().required()
         });
 
@@ -30,7 +37,24 @@ const paasController = {
             return next(error);
         }
 
-        const { organization, from, to, status, expiryDate, paasType, depot, possibleDestinations } = value;
+
+        const { organization, from, to, expiryDate, paasType, depot } = value;
+
+
+        const FROM = from.toUpperCase();
+        const TO = to.toUpperCase();
+        const DEPOT = depot.toUpperCase();
+        const routedata : RouteData = routeData;
+
+        
+        if (!routedata[DEPOT]) {
+                return next(CustomErrorHandler.notFound('Depot not found'));
+        }
+        if(!routedata[DEPOT].routes.includes(FROM) || !routedata[DEPOT].routes.includes(TO)){
+            return next(CustomErrorHandler.notFound('Route not found'));
+        }
+        const possibleDestinations : Array<String> = routedata[DEPOT].routes.slice(routedata[DEPOT].routes.indexOf(FROM) + 1 , routedata[DEPOT].routes.indexOf(TO)+1);
+
 
         const paas = new Paas({
             user: _id,
