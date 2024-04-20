@@ -3,9 +3,9 @@ const busData = {
     busNumber: "GJ-02-FT-1234",
     busType: "EXPRESS",
     busCapacity: 50,
-    busStart: "UNJHA",
+    busSource: "UNJHA",
     busDestination: "GANDHINAGAR",
-    busPricePerKillometer: 2,
+    busPricePerKilometer: 2,
     busRoute: [
       {
         name: "UNJHA",

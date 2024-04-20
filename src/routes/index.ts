@@ -1,4 +1,4 @@
-import { registerController , loginController , userController , refreshController ,logoutController, paasController, ticketController } from "../controllers";
+import { registerController , loginController , userController , refreshController ,logoutController, paasController, ticketController,busController } from "../controllers";
 import { Router } from "express";
 import auth from "../middlewares/auth";
 
@@ -15,5 +15,6 @@ routes.post("/paas/create",auth,paasController.createPaas);
 routes.get("/paas/status",auth,paasController.paasStatus); 
 routes.post("/ticket/create",auth,ticketController.createTicket); 
 routes.get("/ticket/verify",ticketController.verifyTicket); 
+routes.get("/bus/getBusData",busController.getBusData);
 
 export default routes;

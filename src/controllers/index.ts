@@ -5,3 +5,4 @@ export {default as refreshController} from './auth/refreshController';
 export {default as logoutController} from './auth/logoutController';
 export {default as paasController} from './paas/paasController';
 export {default as ticketController} from './ticket/ticketController';
+export {default as busController} from './bus/busController';
