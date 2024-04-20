@@ -51,10 +51,11 @@ const ticketSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        expires: 86400 
     }
-});
+},{timestamps: true});
 
-const Ticket = mongoose.model('Ticket', ticketSchema);
+ticketSchema.index({createdAt: 1},{expireAfterSeconds: 86400});
+
+const Ticket = mongoose.model('Tickets', ticketSchema);
 
 export default Ticket;

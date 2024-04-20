@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import CustomErrorHandler from "../../services/CustomErrorHandler";
 import Joi from "joi";
-import { Ticket } from "../../models";
+import { Paas, Ticket } from "../../models";
 
 interface UserRequest extends Request{
     user? : { _id : string , role : string }
@@ -46,8 +46,26 @@ const ticketController = {
             from,
             to,
             ticketQuantity,
-            ticketPrice
+            ticketPrice,
         })
+
+        // get the paas details
+        const paas = await Paas.findOne({ _id : paasId });
+
+        // check if paas exist
+        if(!paas){
+            return next(CustomErrorHandler.notFound('Paas not found'));
+        }
+
+        // check if the paas is expired
+        if(paas.expiryDate < new Date()){
+            return next(CustomErrorHandler.unAuthorized('Paas expired'));
+        }
+
+        // check if the paas is valid for the destination
+        if(!paas.possibleDestinations.includes(to)){
+            return next(CustomErrorHandler.unAuthorized('Paas not valid for the destination'));
+        }
 
         // save ticket
         try{
