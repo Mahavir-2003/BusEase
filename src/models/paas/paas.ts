@@ -23,10 +23,6 @@ const paasSchema = new mongoose.Schema({
         type : Boolean,
         required : true
     },
-    createdAt : {
-        type : Date,
-        required : true
-    },
     expiryDate : {
         type : Date,
         required : true
@@ -40,7 +36,7 @@ const paasSchema = new mongoose.Schema({
         type : String,
         required : true
     }
-});
+}, {timestamps : true});
 
 const Paas = mongoose.model('Paas', paasSchema);
 

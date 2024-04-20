@@ -18,6 +18,10 @@ class CustomErrorHandler extends Error {
         return new CustomErrorHandler(401, message);
     }
 
+    static duplicateKeyError(message : string = "Duplicate Key"){
+        return new CustomErrorHandler(400, message);
+    }
+
     static unAuthorized(message : string = "Unauthorized"){
         return new CustomErrorHandler(403, message);
     }
