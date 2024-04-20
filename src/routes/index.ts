@@ -11,7 +11,7 @@ routes.post("/login", loginController.login);
 routes.get("/user", auth , userController.getUser);
 routes.post("/refresh",refreshController.refresh);
 routes.post("/logout",auth,logoutController.logout);
-routes.post("/create/paas",auth,paasController.createPaas); 
-
+routes.post("/paas/create",auth,paasController.createPaas); 
+routes.get("/paas/status",auth,paasController.paasStatus); 
 
 export default routes;

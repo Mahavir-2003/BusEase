@@ -59,6 +59,24 @@ const paasController = {
             }
             return next(error);
         }
+    },
+    paasStatus: async (req: UserRequest, res: Response, next: NextFunction) => {
+        if (!req.user) {
+            return next(CustomErrorHandler.unAuthorized());
+        }
+    
+        const { _id } = req.user!;
+    
+        try {
+            const paas = await Paas.findOne({ user: _id });
+            if (!paas) {
+                return next(CustomErrorHandler.notFound('You have not created any paas, Unable to fetch status'));
+            }
+            return res.json({ status: paas.status });
+    
+        } catch (error) {
+            return next(error);
+        }
     }
 };
 
