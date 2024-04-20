@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { Paas } from "models";
-import CustomErrorHandler from "services/CustomErrorHandler";
+import { Paas } from "../../models";
+import CustomErrorHandler from "../../services/CustomErrorHandler";
 
 interface UserRequest extends Request{
     user? : { _id : string , role : string }
@@ -19,7 +19,6 @@ const paasController = {
             organization: Joi.string().required(),
             from: Joi.string().required(),
             to: Joi.string().required(),
-            status: Joi.boolean().required(),
             expiryDate: Joi.date().min('now').required(),
             paasType: Joi.string().valid('NORMAL', 'EXPRESS').required(),
             depot: Joi.string().required()
@@ -37,11 +36,18 @@ const paasController = {
             organization,
             from,
             to,
-            status,
+            status : true,
             expiryDate,
             paasType,
             depot
         });
+
+        // check if the user has already created a paas
+        const isPaasExist = await Paas.findOne({ user: _id });
+
+        if (isPaasExist) {
+            return next(CustomErrorHandler.alreadyExist('You have already created a paas'));
+        }
 
         try {
             const createdPaas = await paas.save();

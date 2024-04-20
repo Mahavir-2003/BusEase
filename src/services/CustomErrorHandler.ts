@@ -25,6 +25,10 @@ class CustomErrorHandler extends Error {
     static unAuthorized(message : string = "Unauthorized"){
         return new CustomErrorHandler(403, message);
     }
+
+    static alreadyExist(message : string = "already exist"){
+        return new CustomErrorHandler(500, message);
+    }
     
 }
 
