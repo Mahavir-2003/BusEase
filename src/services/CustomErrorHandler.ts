@@ -10,8 +10,8 @@ class CustomErrorHandler extends Error {
         return new CustomErrorHandler(409, message = "Already Exists");
     }
 
-    static notFound(message : string){
-        return new CustomErrorHandler(404, message = "Not Found");
+    static notFound(message : string = "Not Found"){
+        return new CustomErrorHandler(404, message = message);
     }
 
     static invalidCredentials(message : string = "Invalid Credentials"){

@@ -14,5 +14,6 @@ routes.post("/logout",auth,logoutController.logout);
 routes.post("/paas/create",auth,paasController.createPaas); 
 routes.get("/paas/status",auth,paasController.paasStatus); 
 routes.post("/ticket/create",auth,ticketController.createTicket); 
+routes.get("/ticket/verify",ticketController.verifyTicket); 
 
 export default routes;

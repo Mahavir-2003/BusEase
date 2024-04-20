@@ -77,6 +77,29 @@ const ticketController = {
         }
 
     },
+    verifyTicket : async (req: Request, res: Response ,next : NextFunction) => {
+        const ticketSchema = Joi.object({
+            ticketID : Joi.string().required(),
+        });
+
+        const { error, value } = ticketSchema.validate(req.body);
+        if (error) {
+            return next(error);
+        }
+
+        const { ticketID } = value;
+
+        // check if the ticket exist
+        try{
+            const ticket = await Ticket.findOne({ _id : ticketID });
+            if(!ticket){
+                return next(CustomErrorHandler.notFound('Ticket not found'));
+            }
+            return res.json(ticket);
+        }catch(err){
+            return next(CustomErrorHandler.notFound('Ticket not found'));
+        }
+    },
 };
 
 export default ticketController;
