@@ -1,4 +1,4 @@
-import { registerController , loginController , userController , refreshController ,logoutController } from "../controllers";
+import { registerController , loginController , userController , refreshController ,logoutController, paasController } from "../controllers";
 import { Router } from "express";
 import auth from "../middlewares/auth";
 
@@ -11,6 +11,7 @@ routes.post("/login", loginController.login);
 routes.get("/user", auth , userController.getUser);
 routes.post("/refresh",refreshController.refresh);
 routes.post("/logout",auth,logoutController.logout);
+routes.post("/create/paas",auth,paasController.createPaas); 
 
 
 export default routes;
