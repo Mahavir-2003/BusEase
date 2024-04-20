@@ -98,7 +98,7 @@ const paasController = {
             if (!paas) {
                 return next(CustomErrorHandler.notFound('You have not created any paas, Unable to fetch status'));
             }
-            return res.json({ status: paas.status , paasId : paas._id , user : paas.user});
+            return res.json({ status: paas.status , paasId : paas._id , user : paas.user , possibleDestinations : paas.possibleDestinations});
     
         } catch (error) {
             return next(error);
