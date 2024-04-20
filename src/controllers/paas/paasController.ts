@@ -21,6 +21,7 @@ const paasController = {
             to: Joi.string().required(),
             expiryDate: Joi.date().min('now').required(),
             paasType: Joi.string().valid('NORMAL', 'EXPRESS').required(),
+            possibleDestinations : Joi.array().items(Joi.string()).required(),
             depot: Joi.string().required()
         });
 
@@ -29,7 +30,7 @@ const paasController = {
             return next(error);
         }
 
-        const { organization, from, to, status, expiryDate, paasType, depot } = value;
+        const { organization, from, to, status, expiryDate, paasType, depot, possibleDestinations } = value;
 
         const paas = new Paas({
             user: _id,
@@ -39,6 +40,7 @@ const paasController = {
             status : true,
             expiryDate,
             paasType,
+            possibleDestinations,
             depot
         });
 

@@ -32,6 +32,10 @@ const paasSchema = new mongoose.Schema({
         enum: ['NORMAL', 'EXPRESS'],
         required: true
     },
+    possibleDestinations : {
+        type : [String],
+        required : true
+    },
     depot : {
         type : String,
         required : true
