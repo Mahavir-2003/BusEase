@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bus_ease/providers/user_provider.dart';
+import 'package:bus_ease/screens/additional/Paas_Creation/paas_creation.dart';
 import 'package:bus_ease/screens/auth/LoginScreen/login.dart';
-import 'package:bus_ease/screens/navigation/screen_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashScreen(),
         '/login': (context) => const Login(),
-        '/home': (context) => const ScreenNavigator(),
+        '/home': (context) => const PaasCreation(),
       },
       initialRoute: '/',
     );
