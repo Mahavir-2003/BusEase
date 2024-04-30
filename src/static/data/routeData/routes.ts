@@ -1,7 +1,7 @@
 const routeData = {
     "UNJHA" : {
         routes : [
-            "UNAVA","BHANDU","RAMOSANA X","RADHANPUR X","MEHSANA","LAKHVAD","RAMPURA X","KHERVA","GANPAT COLLAGE","GANDHINAGAR",
+            "UNJHA","UNAVA","BHANDU","RAMOSANA X","RADHANPUR X","MEHSANA","LAKHVAD","RAMPURA X","KHERVA","GANPAT COLLAGE","GANDHINAGAR",
              ]
 }
 }
