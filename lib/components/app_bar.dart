@@ -1,10 +1,14 @@
+import 'package:bus_ease/screens/ticket/qr_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AppBarBusEase extends AppBar {
   final BuildContext parentContext; // Add this variable
   final Function(int) onItemTapped;
-  AppBarBusEase({super.key, required this.onItemTapped, required this.parentContext}) // Rename the 'key' parameter to 'appBarKey'
+  AppBarBusEase(
+      {super.key,
+      required this.onItemTapped,
+      required this.parentContext}) // Rename the 'key' parameter to 'appBarKey'
       : super(
           backgroundColor: const Color(0x00000000),
           automaticallyImplyLeading: false, // Remove the back arrow
@@ -24,7 +28,13 @@ class AppBarBusEase extends AppBar {
               ),
               GestureDetector(
                 onTap: () {
-                  // Add your click handling code here
+                  // navigate to the QR Scanner screen
+                  Navigator.push(
+                    parentContext,
+                    MaterialPageRoute(
+                      builder: (context) => const QRScanner(),
+                    ),
+                  );
                 },
                 child: SvgPicture.asset(
                   "assets/icons/Scan.svg",
