@@ -143,6 +143,7 @@ class _QRScannerState extends State<QRScanner>
     controller.scannedDataStream.listen((scanData) {
       // handle scanned data here
       // check if QR data contains the bus number
+      print("Scanner Data : ${scanData.code}");
     });
   }
 }
