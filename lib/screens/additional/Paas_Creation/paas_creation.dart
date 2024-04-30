@@ -81,7 +81,7 @@ class _PaasCreationState extends State<PaasCreation> {
     );
 
     var body = jsonEncode({
-      'organization': 'Ganpat University',
+      'organization': organizationController.text.toString(),
       'from': fromDropdownValue,
       'to': toDropdownValue,
       'expiryDate': expiryDate.toString(),
@@ -98,22 +98,27 @@ class _PaasCreationState extends State<PaasCreation> {
         },
         body: body,
       );
-      var res = jsonEncode(response.body);
-      if (response.statusCode == 200) {
-        print(res);
+      var res = jsonDecode(response.body);
+      if (response.statusCode == 201) {
+        // write user id and paas id and user origin to secure storage
+        await _storage.write(key: "paas_id", value: res["_id"]);
+        await _storage.write(key: "user_id", value: res["user"]);
+        await _storage.write(key: "user_origin", value: res["from"].toString().toUpperCase());
+
+        showSnackBar(context, "Paas Created Successfully", Colors.green);
         setState(() {
           isSubmitting = false;
         });
+        // navigate to the home screen
+        Navigator.pushReplacementNamed(context, '/home');
       } else {
-        showSnackBar(context, "Some Error Occured or you already have created the paas.",  Colors.red);
-        print(res);
+        showSnackBar(context, "Some Error Occured or you already have created the paas. ${response.statusCode}",  Colors.red);
         setState(() {
           isSubmitting = false;
         });
       }
     } catch (e) {
       showSnackBar(context, "An error occurred: $e", Colors.red);
-      print(e);
       setState(() {
         isSubmitting = false;
       });

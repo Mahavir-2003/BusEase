@@ -1,7 +1,7 @@
 import 'package:bus_ease/providers/user_provider.dart';
+import 'package:bus_ease/screens/additional/Paas_Creation/paas_creation.dart';
 import 'package:bus_ease/screens/additional/profile_Settings/account.dart';
 import 'package:bus_ease/screens/additional/profile_Settings/help_center.dart';
-import 'package:bus_ease/screens/additional/profile_Settings/paas_validity.dart';
 import 'package:bus_ease/screens/auth/LoginScreen/login.dart';
 import 'package:bus_ease/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +84,7 @@ class _ProfileState extends State<Profile> {
               const SizedBox(height: 65),
               // Correct placement of _buildInfoBox
              _buildInfoBox("Account",const Account()),
-              _buildInfoBox("Pass validity", const PassValidity()),
+              _buildInfoBox("Pass Creation", const PaasCreation()),
               _buildInfoBox("Help Center", const HelpCenter()),
               ElevatedButton(onPressed: _logout, child: const Text("Log Out")),
 
@@ -96,34 +96,35 @@ class _ProfileState extends State<Profile> {
     );
   }
 Widget _buildInfoBox(String text, Widget destinationPage) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15, right: 18, left: 18),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(84, 85, 96, 0.9),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            text,
-            style: const TextStyle(color: Colors.white, fontSize: 18),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => destinationPage,
           ),
-          GestureDetector(
-            onTap: () {
-              // Navigate to the specified destination page when the arrow is tapped
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => destinationPage),
-              );
-            },
-            child: const Icon(
-              Icons.keyboard_arrow_right_sharp,
-              color: Colors.white,
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 15, right: 18, left: 18),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(84, 85, 96, 0.9),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              text,
+              style: const TextStyle(color: Colors.white, fontSize: 18),
             ),
-          ),
-        ],
+            const Icon(
+                Icons.keyboard_arrow_right_sharp,
+                color: Colors.white,
+              ),
+          ],
+        ),
       ),
     );
   }
