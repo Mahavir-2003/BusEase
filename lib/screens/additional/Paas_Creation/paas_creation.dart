@@ -1,6 +1,9 @@
 // create a stateful widget
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class PaasCreation extends StatefulWidget {
   const PaasCreation({super.key});
@@ -18,6 +21,104 @@ class _PaasCreationState extends State<PaasCreation> {
   String depotDropdownValue = 'UNJHA';
 
   bool isSubmitting = false;
+
+  final _storage = const FlutterSecureStorage();
+  var baseUrl = "https://busease-server.vercel.app";
+
+  final TextEditingController organizationController = TextEditingController();
+
+//   curl --location 'http://localhost:8080/api/paas/create/' \
+// --header 'Content-Type: application/json' \
+// --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjAxMWJiOTA0MGYyZjViZjQ4ODg3M2EiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMzc2MjY0MSwiZXhwIjoxNzEzODQ5MDQxfQ.f0OxFAfiTEYM6egGbSIQ53SZXaSbP2SPvHOVstUjX3I' \
+// --data '{
+//     "organization": "Ganpat University",
+//     "from": "Unava",
+//     "to": "MEHSANA",
+//     "expiryDate": "2024-12-31",
+//     "paasType": "NORMAL",
+//     "depot": "UNJHA"
+// }'
+
+// create paas function that will be called when the user clicks on the create paas button which calls api endpoint to create a paas
+
+  void showSnackBar(BuildContext context, String message, Color color) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: color,
+    ),
+  );
+}
+
+  Future<void> createPaas() async {
+    setState(() {
+      isSubmitting = true;
+    });
+
+    var token = await _storage.read(key: "access_token");
+
+    var url = Uri.parse("$baseUrl/api/paas/create/");
+
+    // check if the organization field is empty
+    if (organizationController.text.isEmpty) {
+      showSnackBar(context, "Organization field is required", Colors.red);
+      setState(() {
+        isSubmitting = false;
+      });
+      return;
+    }
+
+    // create the Expiry Date based on the duration selected
+    var expiryDate = DateTime.now().add(
+      // check the duration selected and add the days accordingly for 1,3,6 months
+      durationDropdownValue == '1 MONTH'
+          ? const Duration(days: 30)
+          : durationDropdownValue == '3 MONTH'
+              ? const Duration(days: 90)
+              : durationDropdownValue == '6 MONTH'
+                  ? const Duration(days: 180)
+                  : const Duration(days: 30),
+    );
+
+    var body = jsonEncode({
+      'organization': 'Ganpat University',
+      'from': fromDropdownValue,
+      'to': toDropdownValue,
+      'expiryDate': expiryDate.toString(),
+      'paasType': paasTypeDropdownValue,
+      'depot': depotDropdownValue,
+    });
+
+    try {
+      var response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
+        body: body,
+      );
+      var res = jsonEncode(response.body);
+      if (response.statusCode == 200) {
+        print(res);
+        setState(() {
+          isSubmitting = false;
+        });
+      } else {
+        showSnackBar(context, "Some Error Occured or you already have created the paas.",  Colors.red);
+        print(res);
+        setState(() {
+          isSubmitting = false;
+        });
+      }
+    } catch (e) {
+      showSnackBar(context, "An error occurred: $e", Colors.red);
+      print(e);
+      setState(() {
+        isSubmitting = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +145,14 @@ class _PaasCreationState extends State<PaasCreation> {
               const SizedBox(
                 height: 50,
               ),
-              const TextField(
-                style: TextStyle(
+              TextField(
+                controller: organizationController,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
                 ),
                 cursorColor: Colors.white,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   fillColor: Color(0xff545560),
                   filled: true,
                   hintText: "Enter Your Organization",
@@ -303,6 +405,7 @@ class _PaasCreationState extends State<PaasCreation> {
                 height: 20,
               ),
               GestureDetector(
+                onTap: createPaas,
                 child: SizedBox(
                   width: double.infinity,
                   height: 50,
