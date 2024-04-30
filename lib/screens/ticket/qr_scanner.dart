@@ -185,8 +185,6 @@ class _QRScannerState extends State<QRScanner>
       } catch (e) {
         print('Invalid QR code');
       }
-
-      print("Scanner Data : ${scanData.code}");
     });
   }
 }
