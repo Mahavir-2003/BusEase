@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bus_ease/providers/ticket_provider.dart';
 import 'package:bus_ease/providers/user_provider.dart';
 import 'package:bus_ease/screens/auth/LoginScreen/login.dart';
 import 'package:bus_ease/screens/navigation/screen_navigator.dart';
@@ -7,8 +8,11 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => TicketProvider()),
+      ],
       child: const MyApp(),
     ),
   );
