@@ -53,7 +53,7 @@ const paasController = {
         if(!routedata[DEPOT].routes.includes(FROM) || !routedata[DEPOT].routes.includes(TO)){
             return next(CustomErrorHandler.notFound('Route not found'));
         }
-        const possibleDestinations : Array<String> = routedata[DEPOT].routes.slice(routedata[DEPOT].routes.indexOf(FROM) + 1 , routedata[DEPOT].routes.indexOf(TO)+1);
+        const possibleDestinations : Array<String> = routedata[DEPOT].routes.slice(routedata[DEPOT].routes.indexOf(FROM) , routedata[DEPOT].routes.indexOf(TO)+1);
 
 
         const paas = new Paas({
@@ -98,7 +98,7 @@ const paasController = {
             if (!paas) {
                 return next(CustomErrorHandler.notFound('You have not created any paas, Unable to fetch status'));
             }
-            return res.json({ status: paas.status , paasId : paas._id , user : paas.user , possibleDestinations : paas.possibleDestinations});
+            return res.json({ status: paas.status , paasId : paas._id , user : paas.user , depot : paas.depot, type : paas.paasType , possibleDestinations : paas.possibleDestinations});
     
         } catch (error) {
             return next(error);
