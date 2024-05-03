@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class TicketProvider extends ChangeNotifier{
     String UserId = "XXXX-XXXX-XXXX-XXXX";
-    String paasId = "XXXX-XXXX-XXXX-XXXX";
+    String PaasId = "XXXX-XXXX-XXXX-XXXX";
     String TicketId = "XXXX-XXXX-XXXX-XXXX";
     String From = "XXXX";
     String To = "XXXX";
@@ -18,7 +18,7 @@ class TicketProvider extends ChangeNotifier{
 
     void setTicketData(String userId, String paasId, String ticketId, String from, String to, String date, String passenger, String depot, String ticketType, int ticketQuantity, int ticketPrice){
         UserId = userId;
-        paasId = paasId;
+        PaasId = paasId;
         TicketId = ticketId;
         From = from;
         To = to;

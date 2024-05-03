@@ -28,7 +28,7 @@ class Ticket extends StatelessWidget {
                     padding:const EdgeInsets.fromLTRB(20, 15, 20, 5),
                     child: Center(
                       child: Text(
-                        Provider.of<TicketProvider>(context, listen: false).paasId.toString(),
+                        Provider.of<TicketProvider>(context, listen: false).PaasId.toString(),
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
