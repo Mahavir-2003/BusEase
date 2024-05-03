@@ -33,7 +33,8 @@ class _TicketCreateState extends State<TicketCreate> {
   String paasID = '';
   String Depot = '';
   String type = '';
-  
+  String from = '';
+  String to = '';
 
   @override
   void initState() {
@@ -50,9 +51,6 @@ class _TicketCreateState extends State<TicketCreate> {
     );
   }
 
-
-
-
 // curl --location 'https://busease-server.vercel.app/api/paas/status/' \
 // --header 'Authorization: Bearer access_token'
 
@@ -63,23 +61,26 @@ class _TicketCreateState extends State<TicketCreate> {
     try {
       var response =
           await http.get(url, headers: {"Authorization": "Bearer $token"});
-          var res = jsonDecode(response.body.toString());
-          print(res);
+      var res = jsonDecode(response.body.toString());
+      print(res);
       if (response.statusCode == 200) {
-        bool isValid =  res['status'];
+        bool isValid = res['status'];
         List<dynamic> possibleDestinations = res['possibleDestinations'];
         print(possibleDestinations.toString());
         if (isValid) {
           print('PAAS is valid');
           // Implement the logic to get the current possible travel places ( current possible travel places should be the intersection of the possible destinations and the bus route)
-          currentPossibleTravelPlaces = places.where((place) => possibleDestinations.contains(place.name.toUpperCase())).toList();
+          currentPossibleTravelPlaces = places
+              .where((place) =>
+                  possibleDestinations.contains(place.name.toUpperCase()))
+              .toList();
           userID = res['user'];
           paasID = res['paasId'];
           Depot = res['depot'];
           type = res['type'];
           print("Current Possible Travel Places");
           currentPossibleTravelPlaces.forEach((place) {
-            print(place.name + " " + place.distance.toString() );
+            print(place.name + " " + place.distance.toString());
           });
           return true;
         } else {
@@ -87,7 +88,8 @@ class _TicketCreateState extends State<TicketCreate> {
           return false;
         }
       } else {
-        showSnackBar(context, 'Error fetching data or PAAS is Invalid', Colors.red);
+        showSnackBar(
+            context, 'Error fetching data or PAAS is Invalid', Colors.red);
         return false;
       }
     } catch (e) {
@@ -129,7 +131,7 @@ class _TicketCreateState extends State<TicketCreate> {
 
         print("Places");
         places.forEach((place) {
-          print(place.name + " " + place.distance.toString() );
+          print(place.name + " " + place.distance.toString());
         });
 
         // get the paas info
@@ -137,8 +139,6 @@ class _TicketCreateState extends State<TicketCreate> {
         if (!isValid) {
           Navigator.pop(context);
         }
-
-
 
         setState(() {
           _loading = false;
@@ -157,7 +157,6 @@ class _TicketCreateState extends State<TicketCreate> {
     }
   }
 
-
   // create ticket function to create a ticket
 //   curl --location 'https://busease-server.vercel.app/api/ticket/create/' \
 // --header 'Content-Type: application/json' \
@@ -174,12 +173,28 @@ class _TicketCreateState extends State<TicketCreate> {
 //     "ticketPrice": 100
 // }'
 
+  bool validateTicketData() {
+    if (from == '' || to == '') {
+      showSnackBar(context, 'Please select the from and to', Colors.red);
+      return false;
+    }
+    if (userID == '' || paasID == '' || Depot == '' || type == '') {
+      showSnackBar(context, 'Error fetching data', Colors.red);
+      return false;
+    }
+    if (from == to) {
+      showSnackBar(context, 'From and To cannot be same', Colors.red);
+      return false;
+    }
+    return true;
+  }
 
   void createTicket() async {
     var url = Uri.parse("$baseUrl/api/ticket/create/");
     var token = await _storage.read(key: 'access_token');
 
-    String userName = '${Provider.of<UserProvider>(context, listen: false).user!.firstName} ${Provider.of<UserProvider>(context, listen: false).user!.middleName.substring(0,1)}.  ${Provider.of<UserProvider>(context, listen: false).user!.lastName}';
+    String userName =
+        '${Provider.of<UserProvider>(context, listen: false).user!.firstName} ${Provider.of<UserProvider>(context, listen: false).user!.middleName.substring(0, 1)}.  ${Provider.of<UserProvider>(context, listen: false).user!.lastName}';
 
     // var body = jsonEncode({
     //   'userID': await _storage.read(key: 'user_id'),
@@ -192,8 +207,53 @@ class _TicketCreateState extends State<TicketCreate> {
     //   'ticketQuantity': 1,
     //   'ticketPrice': 100,
     // });
-  }
 
+    if (!validateTicketData()) {
+      return;
+    }
+
+    // calculate ticket price (to distance - from distance) * bus price per km
+    int ticketPrice = (currentPossibleTravelPlaces
+                .firstWhere((place) => place.name == to)
+                .distance -
+            currentPossibleTravelPlaces
+                .firstWhere((place) => place.name == from)
+                .distance) *
+        busPricePerKM;
+
+    var body = jsonEncode({
+      'userID': userID,
+      'paasId': paasID,
+      'passengerName': userName,
+      'Depot': Depot,
+      'type': type,
+      'from': from,
+      'to': to,
+      'ticketQuantity': 1,
+      'ticketPrice': ticketPrice,
+    });
+
+    try {
+      var response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
+        body: body,
+      );
+      var res = jsonDecode(response.body.toString());
+      print(res);
+      if (response.statusCode == 200) {
+        showSnackBar(context, 'Ticket Created Successfully', Colors.green);
+      } else {
+        showSnackBar(context, 'Error creating ticket', Colors.red);
+      }
+    } catch (e) {
+      print(e);
+      showSnackBar(context, 'Error creating ticket', Colors.red);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -225,19 +285,43 @@ class _TicketCreateState extends State<TicketCreate> {
                   Text('Hello'),
                   Text(widget.bus_number),
                   Text('Bus Price Per KM: $busPricePerKM'),
-                  Text('Bus Route:'),
-                  Column(
-                    children: places
-                        .map((place) =>
-                            Text('${place.name} - ${place.distance}'))
+                  // dropdown to show the current possible travel places to select the from and to and the dropdown showing the selected from and to
+                  DropdownButton<Place>(
+                    hint: from == '' ? Text('From') : Text(from),
+                    value: null,
+                    items: currentPossibleTravelPlaces
+                        .map((place) => DropdownMenuItem(
+                              child: Text(place.name),
+                              value: place,
+                            ))
                         .toList(),
+                    onChanged: (Place? value) {
+                      setState(() {
+                        from = value!.name;
+                      });
+                    },
                   ),
-                  Text('Current Possible Travel Places:'),
-                  Column(
-                    children: currentPossibleTravelPlaces
-                        .map((place) =>
-                            Text('${place.name} - ${place.distance}'))
+                  DropdownButton<Place>(
+                    hint: to == '' ? Text('To') : Text(to),
+                    value: null,
+                    items: currentPossibleTravelPlaces
+                        .map((place) => DropdownMenuItem(
+                              child: Text(place.name),
+                              value: place,
+                            ))
                         .toList(),
+                    onChanged: (Place? value) {
+                      setState(() {
+                        to = value!.name;
+                      });
+                    },
+                  ),
+                  // button to create the ticket with loading state
+                  ElevatedButton(
+                    onPressed: () {
+                      createTicket();
+                    },
+                    child: Text('Create Ticket'),
                   ),
                 ],
               ),
