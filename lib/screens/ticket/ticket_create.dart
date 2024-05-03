@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:bus_ease/providers/user_provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TicketCreate extends StatefulWidget {
   final String bus_number;
@@ -27,6 +29,12 @@ class _TicketCreateState extends State<TicketCreate> {
   List<Place> places = [];
   List<Place> currentPossibleTravelPlaces = [];
 
+  String userID = '';
+  String paasID = '';
+  String Depot = '';
+  String type = '';
+  
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +49,9 @@ class _TicketCreateState extends State<TicketCreate> {
       ),
     );
   }
+
+
+
 
 // curl --location 'https://busease-server.vercel.app/api/paas/status/' \
 // --header 'Authorization: Bearer access_token'
@@ -62,6 +73,10 @@ class _TicketCreateState extends State<TicketCreate> {
           print('PAAS is valid');
           // Implement the logic to get the current possible travel places ( current possible travel places should be the intersection of the possible destinations and the bus route)
           currentPossibleTravelPlaces = places.where((place) => possibleDestinations.contains(place.name.toUpperCase())).toList();
+          userID = res['user'];
+          paasID = res['paasId'];
+          Depot = res['depot'];
+          type = res['type'];
           print("Current Possible Travel Places");
           currentPossibleTravelPlaces.forEach((place) {
             print(place.name + " " + place.distance.toString() );
@@ -141,6 +156,44 @@ class _TicketCreateState extends State<TicketCreate> {
       Navigator.pop(context);
     }
   }
+
+
+  // create ticket function to create a ticket
+//   curl --location 'https://busease-server.vercel.app/api/ticket/create/' \
+// --header 'Content-Type: application/json' \
+// --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjAxMWJiOTA0MGYyZjViZjQ4ODg3M2EiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ4MTc4MywiZXhwIjoxNzE0NTY4MTgzfQ.O8g7G83qUgaYGw-gOTDOWpGX_5xeLYrMpcayoWLEfaI' \
+// --data '{
+//     "userID": "66011bb9040f2f5bf488873a",
+//     "paasId": "6630edd23b4ff2156d92fdcb",
+//     "passengerName": "Mahavir Patel",
+//     "Depot": "UNJHA",
+//     "type": "Student",
+//     "from": "UNJHA",
+//     "to": "MEHSANA",
+//     "ticketQuantity": 1,
+//     "ticketPrice": 100
+// }'
+
+
+  void createTicket() async {
+    var url = Uri.parse("$baseUrl/api/ticket/create/");
+    var token = await _storage.read(key: 'access_token');
+
+    String userName = '${Provider.of<UserProvider>(context, listen: false).user!.firstName} ${Provider.of<UserProvider>(context, listen: false).user!.middleName.substring(0,1)}.  ${Provider.of<UserProvider>(context, listen: false).user!.lastName}';
+
+    // var body = jsonEncode({
+    //   'userID': await _storage.read(key: 'user_id'),
+    //   'paasId': await _storage.read(key: 'paas_id'),
+    //   'passengerName': await _storage.read(key: 'name'),
+    //   'Depot': await _storage.read(key: 'depot'),
+    //   'type': await _storage.read(key: 'type'),
+    //   'from': 'UNJHA',
+    //   'to': 'MEHSANA',
+    //   'ticketQuantity': 1,
+    //   'ticketPrice': 100,
+    // });
+  }
+
 
   @override
   Widget build(BuildContext context) {
