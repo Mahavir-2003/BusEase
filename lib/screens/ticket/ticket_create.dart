@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bus_ease/providers/ticket_provider.dart';
 import 'package:bus_ease/providers/user_provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -36,9 +37,12 @@ class _TicketCreateState extends State<TicketCreate> {
   String from = '';
   String to = '';
 
+   var ticketProvider ;
+
   @override
   void initState() {
     super.initState();
+    ticketProvider = Provider.of<TicketProvider>(context, listen: false);
     getBusData();
   }
 
@@ -246,6 +250,10 @@ class _TicketCreateState extends State<TicketCreate> {
       print(res);
       if (response.statusCode == 200) {
         showSnackBar(context, 'Ticket Created Successfully', Colors.green);
+        // update the ticket provider
+        ticketProvider.setTicketData(res["userID"], res["paasId"], res["_id"], res["from"], res["to"], res["Date"], res["passengerName"], res["Depot"], res["type"], res["ticketQuantity"], res["ticketPrice"]);
+        // navigate to the home screen
+        Navigator.popAndPushNamed(context, "/home");
       } else {
         showSnackBar(context, 'Error creating ticket', Colors.red);
       }

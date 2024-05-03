@@ -1,9 +1,12 @@
+import 'package:bus_ease/providers/ticket_provider.dart';
 import 'package:bus_ease/providers/user_provider.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:provider/provider.dart';
+
 class Ticket extends StatelessWidget {
+
   const Ticket({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -21,12 +24,12 @@ class Ticket extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(20, 15, 20, 5),
+                  Padding(
+                    padding:const EdgeInsets.fromLTRB(20, 15, 20, 5),
                     child: Center(
                       child: Text(
-                        '1234-5678-XXXX-XXXX',
-                        style: TextStyle(
+                        Provider.of<TicketProvider>(context, listen: false).paasId.toString(),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                         ),
@@ -71,21 +74,21 @@ class Ticket extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Unjha',
-                          style: TextStyle(
+                          Provider.of<TicketProvider>(context, listen: false).From.toString(),
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         Text(
-                          'Kherva',
-                          style: TextStyle(
+                          Provider.of<TicketProvider>(context, listen: false).To.toString(),
+                          style:const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
@@ -150,7 +153,7 @@ class Ticket extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              Provider.of<UserProvider>(context, listen: false).user!.id,
+                              Provider.of<TicketProvider>(context, listen: false).TicketId.toString(),
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -166,7 +169,7 @@ class Ticket extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '${Provider.of<UserProvider>(context, listen: false).user!.firstName} ${Provider.of<UserProvider>(context, listen: false).user!.middleName.substring(0,1)}.  ${Provider.of<UserProvider>(context, listen: false).user!.lastName}',
+                              Provider.of<TicketProvider>(context, listen: false).Passenger.toString(),
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -181,9 +184,9 @@ class Ticket extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            const Text(
-                              '28 July 2024',
-                              style: TextStyle(
+                            Text(
+                              Provider.of<TicketProvider>(context, listen: false).Date.toString().substring(0, 10).split('-').reversed.join('-'),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -197,9 +200,9 @@ class Ticket extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            const Text(
-                              'Palanpur',
-                              style: TextStyle(
+                             Text(
+                              Provider.of<TicketProvider>(context, listen: false).Depot.toString(),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -225,8 +228,8 @@ class Ticket extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Padding(
-                    padding: EdgeInsets.only(
+                  Padding(
+                    padding: const EdgeInsets.only(
                         top: 4, left: 20, bottom: 10, right: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -234,7 +237,7 @@ class Ticket extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Type:',
                               style: TextStyle(
                                 color: Color(0xffA7A7A7),
@@ -243,8 +246,8 @@ class Ticket extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Student',
-                              style: TextStyle(
+                              Provider.of<TicketProvider>(context, listen: false).TicketType.toString(),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -254,7 +257,7 @@ class Ticket extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Total:',
                               style: TextStyle(
                                 color: Color(0xffA7A7A7),
@@ -263,8 +266,8 @@ class Ticket extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Full : 1 x 26.00 = 26.00 INR',
-                              style: TextStyle(
+                              'Full : ${Provider.of<TicketProvider>(context, listen: false).TicketQuantity.toString()} x ${Provider.of<TicketProvider>(context, listen: false).TicketPrice.toString()} = ${(Provider.of<TicketProvider>(context, listen: false).TicketQuantity * Provider.of<TicketProvider>(context, listen: false).TicketPrice).toString()} INR',
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -318,7 +321,7 @@ class Ticket extends StatelessWidget {
                       height: 150,
                       width: 150,
                       child: PrettyQrView.data(
-                        data: "Hello Mahavir patel",
+                        data: '{"ticketID" : "${Provider.of<TicketProvider>(context, listen: false).TicketId.toString()}"}',
                         decoration: const PrettyQrDecoration(
                           shape: PrettyQrSmoothSymbol(),
                         ),

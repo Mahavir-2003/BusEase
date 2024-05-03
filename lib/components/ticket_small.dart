@@ -1,5 +1,5 @@
 //create a stateful widget
-import 'package:bus_ease/providers/user_provider.dart';
+import 'package:bus_ease/providers/ticket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:provider/provider.dart';
@@ -28,21 +28,21 @@ class _TicketSmallState extends State<TicketSmall> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 10, left: 20, bottom: 5, right: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, left: 20, bottom: 5, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'XXXXXX',
-                    style: TextStyle(
+                    Provider.of<TicketProvider>(context, listen: false).From.toString(),
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    'XXXXXX',
-                    style: TextStyle(
+                    Provider.of<TicketProvider>(context, listen: false).To.toString(),
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -108,7 +108,7 @@ class _TicketSmallState extends State<TicketSmall> {
                         ),
                       ),
                       Text(
-                        '${Provider.of<UserProvider>(context, listen: false).user!.firstName} ${Provider.of<UserProvider>(context, listen: false).user!.middleName.substring(0,1)}.  ${Provider.of<UserProvider>(context, listen: false).user!.lastName}',
+                        Provider.of<TicketProvider>(context, listen: false).Passenger.toString(),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -116,11 +116,11 @@ class _TicketSmallState extends State<TicketSmall> {
                       ),
                     ],
                   ),
-                  const Column(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Date:',
                         style: TextStyle(
                           color: Color(0xffA7A7A7),
@@ -129,8 +129,9 @@ class _TicketSmallState extends State<TicketSmall> {
                         ),
                       ),
                       Text(
-                        '28 Jul 2024',
-                        style: TextStyle(
+                        // show date in normal format
+                        Provider.of<TicketProvider>(context, listen: false).Date.toString().substring(0, 10).split('-').reversed.join('-'),
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -140,8 +141,8 @@ class _TicketSmallState extends State<TicketSmall> {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 5, left: 20, bottom: 10, right: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 5, left: 20, bottom: 10, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -149,7 +150,7 @@ class _TicketSmallState extends State<TicketSmall> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Depot:',
                         style: TextStyle(
                           color: Color(0xffA7A7A7),
@@ -158,15 +159,15 @@ class _TicketSmallState extends State<TicketSmall> {
                         ),
                       ),
                       Text(
-                        'XXXXXXX',
-                        style: TextStyle(
+                        Provider.of<TicketProvider>(context, listen: false).Depot.toString(),
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
                   ),
-                  Expanded(
+                  const Expanded(
                     flex: 2,
                     child: SizedBox(),
                   ),
@@ -176,7 +177,7 @@ class _TicketSmallState extends State<TicketSmall> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Type:',
                           style: TextStyle(
                             color: Color(0xffA7A7A7),
@@ -185,8 +186,8 @@ class _TicketSmallState extends State<TicketSmall> {
                           ),
                         ),
                         Text(
-                          'XXXXX',
-                          style: TextStyle(
+                          Provider.of<TicketProvider>(context, listen: false).TicketType.toString(),
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
@@ -236,12 +237,12 @@ class _TicketSmallState extends State<TicketSmall> {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 4, left: 20, bottom: 10, right: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 4, left: 20, bottom: 10, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Total:',
                     style: TextStyle(
                       fontSize: 16,
@@ -249,8 +250,8 @@ class _TicketSmallState extends State<TicketSmall> {
                     ),
                   ),
                   Text(
-                    '26.00 INR',
-                    style: TextStyle(
+                    '${(Provider.of<TicketProvider>(context, listen: false).TicketQuantity * Provider.of<TicketProvider>(context, listen: false).TicketPrice).toString()}.00 INR',
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),

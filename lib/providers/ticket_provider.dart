@@ -7,9 +7,9 @@ class TicketProvider extends ChangeNotifier{
     String TicketId = "XXXX-XXXX-XXXX-XXXX";
     String From = "XXXX";
     String To = "XXXX";
-    String Date = "XXXX";
+    String Date = "XXXX-XX-XX";
     String Passenger = "XXXX";
-    String depot = "XXXX";
+    String Depot = "XXXX";
     String TicketType = "XXXX";
     int TicketQuantity = 1;
     int TicketPrice = 0;
@@ -24,7 +24,7 @@ class TicketProvider extends ChangeNotifier{
         To = to;
         Date = date;
         Passenger = passenger;
-        depot = depot;
+        Depot = depot;
         TicketType = ticketType;
         TicketQuantity = ticketQuantity;
         TicketPrice = ticketPrice;
