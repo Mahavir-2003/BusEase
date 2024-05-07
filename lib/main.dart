@@ -48,6 +48,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     fetchUser();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<TicketProvider>(context, listen: false).loadTicketData();
+    });
   }
 
   Future<void> fetchUser() async {
