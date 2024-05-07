@@ -1,7 +1,7 @@
 
 <div  align="center">
 
-<img  src="https://github.com/Mahavir-2003/BusEase/blob/main/assets/images/bus_ease_logo.png"  alt="BusEase Logo"  width="200"  height="200">
+<img  src="assets/images/bus_ease_logo.png"  alt="BusEase Logo"   height="200">
 
 <h1>BusEase</h1>
 
@@ -37,7 +37,7 @@ BusEase is a cutting-edge mobile application that aims to transform the way peop
 
 <div  align="center">
 
-<img  src="assets/images/bus_ease_mockup.png"  alt="BusEase App UI"  width="300">
+<img  src="assets/images/bus_ease_mockup.png"  alt="BusEase App UI"  height="600">
 
 </div>
 
@@ -49,7 +49,7 @@ BusEase is a cutting-edge mobile application that aims to transform the way peop
 
 <div  align="center">
 
-<img  src="https://example.com/busease-qr-code.png"  alt="BusEase QR Code"  width="200">
+<img  src="assets/images/bus_ease_bus_QR.jpg"  alt="BusEase QR Code"  width="200">
 
 </div>
 
@@ -62,7 +62,7 @@ With BusEase, bus travel in Gujarat has never been easier. Download the app toda
 
   
 
-- Website: [https://www.busease.com](https://busease.vercel.app/)
+- Website: [https://busease.vercel.app/](https://busease.vercel.app/)
 
   
 
