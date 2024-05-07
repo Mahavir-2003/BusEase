@@ -3,9 +3,8 @@
 
 <img  src="assets/images/bus_ease_logo.png"  alt="BusEase Logo"    height="100">
 
-<h1>BusEase</h1>
 
-<p>The Revolutionary Bus Travel App for GSRTC in India</p>
+<h2>The Revolutionary Bus Travel App for GSRTC in India</h2>
 
 </div>
 
