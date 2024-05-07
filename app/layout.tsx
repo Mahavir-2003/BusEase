@@ -23,19 +23,19 @@ type CustomMetadata = {
 };
 
 export const metadata: CustomMetadata = {
-  title: "YatraZen",
+  title: "BusEase",
   description:
-    "YaatraZen is your complete travel companion, that allows you to translate local languages, find nearby hospitals, see the latest weather, find all travel news , explore new places according to you and much more.",
+    "BusEase is a revolutionary mobile application designed to transform the way people travel by bus in the Indian state of Gujarat, specifically catering to the Gujarat State Road Transport Corporation (GSRTC). This cutting-edge app offers a seamless and convenient experience for both students and passengers, addressing the challenges faced in traditional bus travel. For students, BusEase introduces a digital bus pass application process, allowing them to submit their requests directly to universities and receive digital passes upon approval, eliminating the need for paperwork and lengthy queues. Passengers can also book bus tickets with ease through the app, skipping the hassle of visiting counters and standing in long lines. BusEase incorporates QR code technology for efficient ticket verification and real-time bus information access, ensuring a smooth travel experience. The integration of popular UPI payment options further enhances convenience by enabling secure and hassle-free transactions. Additionally, the real-time bus tracking feature empowers users to plan their journeys effectively by monitoring the live location of buses. With BusEase, the future of public transportation in Gujarat has arrived, offering a user-friendly and technologically advanced solution for seamless bus travel. Available on both Google Play Store and Apple App Store, download BusEase today and experience the revolution in bus travel.",
   openGraph: {
-    title: "YatraZen",
+    title: "BusEase",
     description:
-      "YatraZen is your complete travel companion, that allows you to translate local languages, find nearby hospitals, see the latest weather, find all travel news , explore new places according to you and much more.",
+      "BusEase is a revolutionary mobile application designed to transform the way people travel by bus in the Indian state of Gujarat, specifically catering to the Gujarat State Road Transport Corporation (GSRTC). This cutting-edge app offers a seamless and convenient experience for both students and passengers, addressing the challenges faced in traditional bus travel. For students, BusEase introduces a digital bus pass application process, allowing them to submit their requests directly to universities and receive digital passes upon approval, eliminating the need for paperwork and lengthy queues. Passengers can also book bus tickets with ease through the app, skipping the hassle of visiting counters and standing in long lines. BusEase incorporates QR code technology for efficient ticket verification and real-time bus information access, ensuring a smooth travel experience. The integration of popular UPI payment options further enhances convenience by enabling secure and hassle-free transactions. Additionally, the real-time bus tracking feature empowers users to plan their journeys effectively by monitoring the live location of buses. With BusEase, the future of public transportation in Gujarat has arrived, offering a user-friendly and technologically advanced solution for seamless bus travel. Available on both Google Play Store and Apple App Store, download BusEase today and experience the revolution in bus travel.",
     type: "website",
-    url: "https://yatrazen.vercel.app/",
+    url: "https://busease.vercel.app/",
     countryName: "India",
     locale: "en_IN",
     determiner: "auto",
-    emails: ["yatrazen@proton.me"],
+    emails: ["patelmahavir2003@gmail.com"],
   },
 };
 

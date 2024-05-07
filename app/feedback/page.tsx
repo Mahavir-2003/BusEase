@@ -54,11 +54,11 @@ export default function Feedback() {
     <>
       <Toaster />
       <div className="flex justify-center items-center min-h-screen p-4">
-        <div className="w-full max-w-2xl space-y-8 bg-white p-8 rounded-2xl shadow-lg border ">
+        <div className="w-full max-w-2xl space-y-8 bg-slate-100 p-8 rounded-2xl shadow-lg border ">
           <div className="space-y-2">
             <div className="flex justify-center items-center p-6">
               <Image
-                src="https://ucarecdn.com/a7cbce5c-895a-4cea-9a8f-9fcbd10351a0/Logo.png"
+                src="/images/busEase.png"
                 alt="logo"
                 width={200}
                 height={200}

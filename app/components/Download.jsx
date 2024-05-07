@@ -13,7 +13,7 @@ const Download = () => {
         </div>
         <p className="release">
           Newer Version Available
-          <span className="font-bold"> ( v4.0.6a ) </span>{" "}
+          <span className="font-bold"> ( v1.0.8 ) </span>{" "}
           <span>
             <Link
               href="https://github.com/NisargPatel14/yatrazen-HIS/releases/download/v1.1/app-release.apk"

@@ -9,7 +9,7 @@ const Updates = () => {
           <div className="avail-ping mx-3"></div>
         </div>
         <p className="release">
-          <span className="font-bold"> ( v4.6 ) </span> Beta is in Development
+          <span className="font-bold"> ( v2.0.2 ) </span> Beta is in Development
         </p>
       </Marquee>
     </div>

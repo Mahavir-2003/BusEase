@@ -3,46 +3,37 @@ import React from "react";
 import Feedback from "./Feedback";
 
 const MobileAppScreenshotURL =
-  "https://ucarecdn.com/1c53f2b7-4a42-4e6a-b4c0-ad298bbba937/-/scale_crop/838x1264/-/format/auto/-/quality/best/";
+  "/images/BusEase_Mockup.png";
 
 const Info = () => {
   return (
-    <div>
+    <div className="h-full flex flex-col justify-between  absolute top-0 left-0 w-full">
       <div
-        className="container mx-auto md:p-16 flex flex-col md:flex-row items-center justify-between max-h-screen m-3.5"
+        className="mx-auto md:p-16 flex flex-col md:flex-row items-center justify-between flex-1 m-3.5 "
       >
-        <section className="md:w-1/2 md:mr-8 flex flex-col items-center justify-center mb-8 md:mb-0 xs:mt-20 sm:mt-16 lg:mt-8 relative">
+        <section className="md:w-1/2 px-4  md:mr-8 flex flex-col items-center justify-center mb-8 md:mb-0 xs:mt-20 sm:mt-16 lg:mt-8 relative">
           <h1 className="text-5xl font-bold mb-4 text-center">
-            Project Update: v4 Live
+            Project Update: v1.0.8 Released!
           </h1>
           <p className="text-lg md:text-xl mb-4 text-center">
-            The v4 of the project is live! You can now access the project on
-            your mobile device. The project is still in development and new
-            features are being added.
+          BusEase v1.0.8 brings a digital solution for seamless bus pass applications and ticketing. Students can book tickets conveniently, making travel easier than ever before.
           </p>
           <p className="text-lg md:text-xl mb-8 text-center">
             Check out the{" "}
             <Link
-              href="https://github.com/ru-dr/v3-Alpha"
+              href="https://github.com/Mahavir-2003/BusEase"
               className="text-blue-500 hover:text-blue-700"
             >
-              v3 Alpha
-            </Link>{" "}
-            and{" "}
-            <Link
-              href="https://github.com/ru-dr/v4"
-              className="text-blue-500 hover:text-blue-700"
-            >
-              v4 Beta
+              v2.0.2 Beta
             </Link>{" "}
             development on GitHub for mobile devices.
           </p>
         </section>
-        <section className="md:w-1/2 flex items-center justify-center">
+        <section className="flex-1 md:w-1/2 h-full flex items-center justify-center">
           <img
             src={MobileAppScreenshotURL}
             alt="Mobile App Screenshot"
-            className="mb-8 h-auto w-96 sm:w-64 lg:w-80 xl:w-96"
+            className=" h-full object-fill"
           />
         </section>
       </div>
