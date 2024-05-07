@@ -16,7 +16,7 @@ const Download = () => {
           <span className="font-bold"> ( v1.0.8 ) </span>{" "}
           <span>
             <Link
-              href="https://github.com/NisargPatel14/yatrazen-HIS/releases/download/v1.1/app-release.apk"
+              href="https://github.com/Mahavir-2003/BusEase/releases/download/v1.0.8/app-release.apk"
               className="text-blue-500 hover:text-blue-700 font-semibold px-2"
             >
               Download
