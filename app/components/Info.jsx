@@ -26,7 +26,7 @@ const Info = () => {
             >
               v2.0.2 Beta
             </Link>{" "}
-            development on GitHub for mobile devices.
+            development on GitHub.
           </p>
         </section>
         <section className="flex-1 md:w-1/2 h-full flex items-center justify-center">
