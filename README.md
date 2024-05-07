@@ -1,7 +1,7 @@
 
 <div  align="center">
 
-<img  src="assets/images/bus_ease_logo.png"  alt="BusEase Logo"   height="200">
+<img  src="assets/images/bus_ease_logo.png"  alt="BusEase Logo"    height="100">
 
 <h1>BusEase</h1>
 
@@ -49,7 +49,7 @@ BusEase is a cutting-edge mobile application that aims to transform the way peop
 
 <div  align="center">
 
-<img  src="assets/images/bus_ease_bus_QR.jpg"  alt="BusEase QR Code"  width="200">
+<img  src="assets/images/bus_ease_bus_QR.jpg"  alt="BusEase QR Code"  width="400">
 
 </div>
 
