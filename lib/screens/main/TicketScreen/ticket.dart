@@ -1,5 +1,4 @@
 import 'package:bus_ease/providers/ticket_provider.dart';
-import 'package:bus_ease/providers/user_provider.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
