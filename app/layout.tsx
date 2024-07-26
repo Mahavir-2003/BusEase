@@ -47,6 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Head>
+        <meta name="google-site-verification" content="MCCP3vhLhrI2FN53psNET5d6gZjkohu7RZmY7fzB3h0" />
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
         <meta property="og:title" content={metadata.openGraph.title} />
@@ -54,7 +55,6 @@ export default function RootLayout({
           property="og:description"
           content={metadata.openGraph.description}
         />
-        <meta name="google-site-verification" content="MCCP3vhLhrI2FN53psNET5d6gZjkohu7RZmY7fzB3h0" />
         <meta property="og:url" content={metadata.openGraph.url} />
         <meta property="og:type" content={metadata.openGraph.type} />
         <meta property="og:locale" content={metadata.openGraph.locale} />
